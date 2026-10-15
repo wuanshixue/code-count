@@ -1,0 +1,27 @@
+[package]
+name = "code-count"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gpui = "0.2.2"
+rfd = "0.17.2"
+smol = "2"
+walkdir = "2.5.0"
+
+[dev-dependencies]
+tempfile = "3.27.0"
+
+# 开发时用 `cargo run` 也能有像样的帧率。
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+# 发布版：体积小、启动快。
+# lto + codegen-units = 1 会让编译慢很多（首次约十几分钟），换来更小的体积和更好的内联。
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

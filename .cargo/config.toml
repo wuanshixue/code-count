@@ -1,0 +1,11 @@
+# 静态链接 MSVC 运行库（CRT）。
+#
+# 默认情况下 Rust 在 windows-msvc 上是动态链接 CRT 的，生成的 exe 会依赖
+# VCRUNTIME140.dll / MSVCP140.dll。这些只在装了 Visual Studio 或
+# VC++ Redistributable 的机器上才有，别人直接拿 exe 过去可能报
+# 「找不到 VCRUNTIME140.dll」而启动失败。
+#
+# 加上 +crt-static 后，运行库被编进 exe 里，单文件就能跑。
+# 注意：改了这里之后需要重新完整编译所有依赖（cargo clean 或换 target 目录）。
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
